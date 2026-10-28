@@ -195,3 +195,6 @@ virtualenv/
 scratch/
 
 .langgraph_api/
+
+# Ad hoc
+playground/

@@ -1,0 +1,5 @@
+# There is no first-party Z.ai (Zhipu AI) provider on models.dev, so the
+# langchain-profiles CLI cannot generate this package's profiles.
+# `data/_profiles.py` is maintained by hand; keep the `provider` id below in
+# sync with any future models.dev entry.
+provider = "zai"

@@ -16,7 +16,7 @@ from openai.types.completion_usage import PromptTokensDetails
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import Field, SecretStr
 
-from langchain_zai.chat_models import ChatZai
+from langchain_zai.chat_models import ChatZAI
 
 MODEL_NAME = "glm-5.3"
 
@@ -62,13 +62,13 @@ class MockOpenAIResponse(BaseModel):
         return {"choices": choices_list, "error": self.error}
 
 
-class TestChatZaiUnit(ChatModelUnitTests):
-    """Standard unit tests for `ChatZai` chat model."""
+class TestChatZAIUnit(ChatModelUnitTests):
+    """Standard unit tests for `ChatZAI` chat model."""
 
     @property
-    def chat_model_class(self) -> type[ChatZai]:
+    def chat_model_class(self) -> type[ChatZAI]:
         """Chat model class being tested."""
-        return ChatZai
+        return ChatZAI
 
     @property
     def init_from_env_params(self) -> tuple[dict, dict, dict]:
@@ -95,17 +95,17 @@ class TestChatZaiUnit(ChatModelUnitTests):
             "api_key": "api_key",
         }
 
-    def get_chat_model(self) -> ChatZai:
+    def get_chat_model(self) -> ChatZAI:
         """Get a chat model instance for testing."""
-        return ChatZai(**self.chat_model_params)
+        return ChatZAI(**self.chat_model_params)
 
 
-class TestChatZaiCustomUnit:
+class TestChatZAICustomUnit:
     """Custom tests specific to Z.ai (Zhipu AI) chat model."""
 
     def test_base_url_alias(self) -> None:
         """Test that `base_url` is accepted as an alias for `api_base`."""
-        chat_model = ChatZai(
+        chat_model = ChatZAI(
             model=MODEL_NAME,
             api_key=SecretStr("api_key"),
             base_url="http://example.test/v1",
@@ -114,7 +114,7 @@ class TestChatZaiCustomUnit:
 
     def test_create_chat_result_with_reasoning_content(self) -> None:
         """Test that reasoning_content is properly extracted from response."""
-        chat_model = ChatZai(model=MODEL_NAME, api_key=SecretStr("api_key"))
+        chat_model = ChatZAI(model=MODEL_NAME, api_key=SecretStr("api_key"))
         mock_message = MagicMock()
         mock_message.content = "Main content"
         mock_message.reasoning_content = "This is the reasoning content"
@@ -136,7 +136,7 @@ class TestChatZaiCustomUnit:
 
     def test_convert_chunk_with_reasoning_content(self) -> None:
         """Test that reasoning_content is properly extracted from streaming chunk."""
-        chat_model = ChatZai(model=MODEL_NAME, api_key=SecretStr("api_key"))
+        chat_model = ChatZAI(model=MODEL_NAME, api_key=SecretStr("api_key"))
         chunk: dict[str, Any] = {
             "choices": [
                 {
@@ -163,7 +163,7 @@ class TestChatZaiCustomUnit:
 
     def test_convert_chunk_without_reasoning(self) -> None:
         """Test that chunk without reasoning fields works correctly."""
-        chat_model = ChatZai(model=MODEL_NAME, api_key=SecretStr("api_key"))
+        chat_model = ChatZAI(model=MODEL_NAME, api_key=SecretStr("api_key"))
         chunk: dict[str, Any] = {"choices": [{"delta": {"content": "Main content"}}]}
 
         chunk_result = chat_model._convert_chunk_to_generation_chunk(
@@ -178,7 +178,7 @@ class TestChatZaiCustomUnit:
 
     def test_convert_chunk_with_empty_delta(self) -> None:
         """Test that chunk with empty delta works correctly."""
-        chat_model = ChatZai(model=MODEL_NAME, api_key=SecretStr("api_key"))
+        chat_model = ChatZAI(model=MODEL_NAME, api_key=SecretStr("api_key"))
         chunk: dict[str, Any] = {"choices": [{"delta": {}}]}
 
         chunk_result = chat_model._convert_chunk_to_generation_chunk(
@@ -193,7 +193,7 @@ class TestChatZaiCustomUnit:
 
     def test_payload_converts_dict_tool_choice_to_auto(self) -> None:
         """Test that dict-form tool_choice is converted to 'auto' in payload."""
-        chat_model = ChatZai(model=MODEL_NAME, api_key=SecretStr("api_key"))
+        chat_model = ChatZAI(model=MODEL_NAME, api_key=SecretStr("api_key"))
         # Simulate the with_structured_output flow: bind_tools converts a tool
         # name string into the dict form {"type": "function", "function": ...}.
         bound = chat_model.bind_tools([SampleTool], tool_choice="SampleTool")
@@ -214,7 +214,7 @@ class TestChatZaiCustomUnit:
         string values are the user's explicit choice and are passed through
         as-is — values other than "auto" will be rejected by the API.
         """
-        chat_model = ChatZai(model=MODEL_NAME, api_key=SecretStr("api_key"))
+        chat_model = ChatZAI(model=MODEL_NAME, api_key=SecretStr("api_key"))
         messages = [("user", "test")]
 
         for choice in ("auto", "required"):
@@ -236,7 +236,7 @@ class TestChatZaiCustomUnit:
         to `input_token_details.cache_read` — no Zhipu-specific handling is
         needed, and this test locks that in.
         """
-        chat_model = ChatZai(model=MODEL_NAME, api_key=SecretStr("api_key"))
+        chat_model = ChatZAI(model=MODEL_NAME, api_key=SecretStr("api_key"))
         response = ChatCompletion(
             id="chatcmpl-test",
             created=0,
@@ -302,7 +302,7 @@ def test_with_structured_output_json_schema_remaps_to_function_calling() -> None
     the json_schema path must not bind a `response_format`; instead tools are
     bound, exactly as in the function_calling path.
     """
-    llm = ChatZai(model=MODEL_NAME, api_key=SecretStr("test_key"))
+    llm = ChatZAI(model=MODEL_NAME, api_key=SecretStr("test_key"))
     structured = llm.with_structured_output(SampleTool, method="json_schema")
     assert structured is not None
 
@@ -314,7 +314,7 @@ def test_with_structured_output_json_schema_remaps_to_function_calling() -> None
 
 def test_profile() -> None:
     """Test that model profile is loaded correctly."""
-    model = ChatZai(model="glm-4.6", api_key=SecretStr("test_key"))
+    model = ChatZAI(model="glm-4.6", api_key=SecretStr("test_key"))
     assert model.profile is not None
     assert model.profile["reasoning_output"]
     assert not model.profile["tool_choice"]
@@ -322,7 +322,7 @@ def test_profile() -> None:
 
 def test_metadata_versions() -> None:
     """Test that metadata reports the correct version info."""
-    llm = ChatZai(model=MODEL_NAME, api_key=SecretStr("test_key"))
+    llm = ChatZAI(model=MODEL_NAME, api_key=SecretStr("test_key"))
     assert llm.metadata is not None
     versions = llm.metadata["lc_versions"]
     assert "langchain-core" in versions

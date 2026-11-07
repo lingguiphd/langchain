@@ -1,4 +1,4 @@
-"""Test ChatZai chat model."""
+"""Test ChatZAI chat model."""
 
 from __future__ import annotations
 
@@ -8,18 +8,18 @@ from langchain_core.messages import AIMessageChunk, BaseMessageChunk
 from langchain_core.tools import BaseTool
 from langchain_tests.integration_tests import ChatModelIntegrationTests
 
-from langchain_zai.chat_models import ChatZai
+from langchain_zai.chat_models import ChatZAI
 
 MODEL_NAME = "glm-5.3"
 
 
-class TestChatZai(ChatModelIntegrationTests):
-    """Test `ChatZai` chat model."""
+class TestChatZAI(ChatModelIntegrationTests):
+    """Test `ChatZAI` chat model."""
 
     @property
-    def chat_model_class(self) -> type[ChatZai]:
+    def chat_model_class(self) -> type[ChatZAI]:
         """Return class of chat model being tested."""
-        return ChatZai
+        return ChatZAI
 
     @property
     def chat_model_params(self) -> dict:
@@ -58,7 +58,7 @@ class TestChatZai(ChatModelIntegrationTests):
 def test_reasoning_content() -> None:
     """Test reasoning content."""
     # Thinking is enabled by default on GLM models.
-    chat_model = ChatZai(model="glm-5.3")
+    chat_model = ChatZAI(model="glm-5.3")
     response = chat_model.invoke("What is 3^3?")
     assert response.content
     assert response.additional_kwargs["reasoning_content"]
@@ -77,7 +77,7 @@ def test_reasoning_content() -> None:
 def test_reasoning_content_streaming() -> None:
     """Test reasoning content with streaming."""
     # Thinking is enabled by default on GLM models.
-    chat_model = ChatZai(model="glm-5.3")
+    chat_model = ChatZAI(model="glm-5.3")
     full: BaseMessageChunk | None = None
     for chunk in chat_model.stream("What is 3^3?"):
         full = chunk if full is None else full + chunk

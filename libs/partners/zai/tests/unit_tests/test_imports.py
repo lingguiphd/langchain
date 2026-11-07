@@ -2,7 +2,7 @@
 
 from langchain_zai import __all__
 
-EXPECTED_ALL = ["__version__", "ChatZai"]
+EXPECTED_ALL = ["__version__", "ChatZAI"]
 
 
 def test_all_imports() -> None:

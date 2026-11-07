@@ -96,7 +96,7 @@ _BUILTIN_PROVIDERS: dict[str, tuple[str, str, Callable[..., BaseChatModel]]] = {
     "together": ("langchain_together", "ChatTogether", _call),
     "upstage": ("langchain_upstage", "ChatUpstage", _call),
     "xai": ("langchain_xai", "ChatXAI", _call),
-    "zai": ("langchain_zai", "ChatZai", _call),
+    "zai": ("langchain_zai", "ChatZAI", _call),
 }
 """Registry mapping provider names to their import configuration.
 

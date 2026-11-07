@@ -36,7 +36,7 @@ def _get_default_model_profile(model_name: str) -> ModelProfile:
     return default.copy()
 
 
-class ChatZai(BaseChatOpenAI):
+class ChatZAI(BaseChatOpenAI):
     """Z.ai (Zhipu AI) chat model integration to access GLM models.
 
     Setup:
@@ -76,9 +76,9 @@ class ChatZai(BaseChatOpenAI):
 
     Instantiate:
         ```python
-        from langchain_zai import ChatZai
+        from langchain_zai import ChatZAI
 
-        model = ChatZai(
+        model = ChatZAI(
             model="glm-5.3",
             temperature=0,
             max_tokens=None,
@@ -144,7 +144,7 @@ class ChatZai(BaseChatOpenAI):
         ai_msg.tool_calls
         ```
 
-        See `ChatZai.bind_tools()` method for more. Note that Zhipu's API only
+        See `ChatZAI.bind_tools()` method for more. Note that Zhipu's API only
         accepts the string `tool_choice="auto"`: the dict/object form accepted
         by `bind_tools` is coerced to `"auto"` at request time, and any other
         string value (e.g. `"required"`) is passed through unchanged and will
@@ -169,7 +169,7 @@ class ChatZai(BaseChatOpenAI):
         structured_model.invoke("Tell me a joke about cats")
         ```
 
-        See `ChatZai.with_structured_output()` for more.
+        See `ChatZAI.with_structured_output()` for more.
 
     Reasoning:
         GLM models emit chain-of-thought into `reasoning_content`, surfaced on
@@ -177,9 +177,9 @@ class ChatZai(BaseChatOpenAI):
         blocks). Thinking is enabled by default; disable it with:
 
         ```python
-        from langchain_zai import ChatZai
+        from langchain_zai import ChatZAI
 
-        model = ChatZai(
+        model = ChatZAI(
             model="glm-5.3",
             extra_body={"thinking": {"type": "disabled"}},
         )
@@ -187,7 +187,7 @@ class ChatZai(BaseChatOpenAI):
 
         ```python
         # Tune reasoning effort (GLM-5.2 and later):
-        model = ChatZai(
+        model = ChatZAI(
             model="glm-5.3",
             reasoning_effort="high",
         )

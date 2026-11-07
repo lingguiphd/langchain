@@ -175,10 +175,10 @@ def test_bedrock_mantle_providers_registered() -> None:
 
 
 def test_zai_provider_registered() -> None:
-    """Zhipu AI provider maps to the `langchain_zai` `ChatZai` chat model class."""
+    """Zhipu AI provider maps to the `langchain_zai` `ChatZAI` chat model class."""
     assert _BUILTIN_PROVIDERS["zai"][:2] == (
         "langchain_zai",
-        "ChatZai",
+        "ChatZAI",
     )
 
 

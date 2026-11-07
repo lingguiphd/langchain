@@ -56,6 +56,13 @@ def test_init_chat_model(model_name: str, model_provider: str | None) -> None:
     assert llm1.dict() == llm2.dict()
 
 
+@pytest.mark.requires("langchain_zai")
+def test_init_chat_model_zai() -> None:
+    llm1: BaseChatModel = init_chat_model("zai:glm-5.3", api_key="foo")
+    llm2: BaseChatModel = init_chat_model("glm-5.3", api_key="foo")
+    assert llm1.dict() == llm2.dict()
+
+
 @pytest.mark.requires("langchain_openai")
 @mock.patch.dict(
     os.environ,
@@ -167,6 +174,14 @@ def test_bedrock_mantle_providers_registered() -> None:
     )
 
 
+def test_zai_provider_registered() -> None:
+    """Zhipu AI provider maps to the `langchain_zai` `ChatZai` chat model class."""
+    assert _BUILTIN_PROVIDERS["zai"][:2] == (
+        "langchain_zai",
+        "ChatZai",
+    )
+
+
 @pytest.mark.parametrize(
     ("model_name", "expected_provider"),
     [
@@ -190,6 +205,8 @@ def test_bedrock_mantle_providers_registered() -> None:
         ("grok-beta", "xai"),
         ("sonar-small", "perplexity"),
         ("solar-pro", "upstage"),
+        ("glm-5.3", "zai"),
+        ("GLM-4.6", "zai"),
     ],
 )
 def test_attempt_infer_model_provider(model_name: str, expected_provider: str) -> None:

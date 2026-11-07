@@ -96,6 +96,7 @@ _BUILTIN_PROVIDERS: dict[str, tuple[str, str, Callable[..., BaseChatModel]]] = {
     "together": ("langchain_together", "ChatTogether", _call),
     "upstage": ("langchain_upstage", "ChatUpstage", _call),
     "xai": ("langchain_xai", "ChatXAI", _call),
+    "zai": ("langchain_zai", "ChatZai", _call),
 }
 """Registry mapping provider names to their import configuration.
 
@@ -284,6 +285,7 @@ def init_chat_model(
             - `grok...`                                   -> `xai`
             - `sonar...`                                  -> `perplexity`
             - `solar...`                                  -> `upstage`
+            - `glm...`                                    -> `zai`
             - `chatgpt...` | `text-davinci...`            -> `openai` (legacy)
         model_provider: Provider of the model, passed separately instead of
             as a prefix on `model`.
@@ -333,6 +335,7 @@ def init_chat_model(
             - `litellm`                 -> [`langchain-litellm`](https://docs.langchain.com/oss/python/integrations/providers/litellm)
             - `meta`                    -> [`langchain-meta`](https://pypi.org/project/langchain-meta)
             - `langsmith`               -> [`langchain-openai`](https://docs.langchain.com/langsmith/llm-gateway)
+            - `zai`                     -> `langchain-zai`
 
         configurable_fields: Which model parameters are configurable at runtime:
 
@@ -616,6 +619,10 @@ def _attempt_infer_model_provider(model_name: str) -> str | None:
     # Upstage models
     if model_lower.startswith("solar"):
         return "upstage"
+
+    # Zhipu AI models
+    if model_lower.startswith("glm"):
+        return "zai"
 
     return None
 
